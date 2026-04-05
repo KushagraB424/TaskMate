@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow-sm border-0 rounded-lg">
+                <div class="card-header bg-white text-center py-4">
+                    <h3 class="mb-0 fw-bold">Create an Account</h3>
+                    <p class="text-muted mb-0">Join the TaskMates community</p>
+                </div>
+                <div class="card-body p-4">
+                    {% if form.errors %}
+                        <div class="alert alert-danger" role="alert">
+                            <strong>Registration failed:</strong> Please check the criteria below!
+                        </div>
+                    {% endif %}
+                    <form method="POST">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <div class="d-grid mt-4">
+                            <button type="submit" class="btn btn-primary btn-lg">Sign Up</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer bg-white text-center py-3">
+                    Already have an account? <a href="{% url 'login' %}" class="text-primary fw-bold text-decoration-none">Login Here</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

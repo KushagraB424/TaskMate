@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="hero text-center py-5">
+    <div class="container py-5">
+        <h1 class="display-4 fw-bold mb-3">On-Demand Home Services</h1>
+        <p class="lead text-muted mb-4">Find skilled professionals for cleaning, repair, and beauty services instantly.
+        </p>
+        {% if user.is_authenticated %}
+            {% if user.role == 'CUSTOMER' %}
+                <a class="btn btn-primary btn-lg px-4 me-md-2" href="{% url 'customer_dashboard' %}">Go to Dashboard</a>
+            {% elif user.role == 'SERVICER' %}
+                <a class="btn btn-outline-secondary btn-lg px-4" href="{% url 'servicer_dashboard' %}">Provider Dashboard</a>
+            {% else %}
+                <a class="btn btn-dark btn-lg px-4" href="/admin/">Admin Panel</a>
+            {% endif %}
+        {% else %}
+            <a class="btn btn-primary btn-lg px-4 me-md-2" href="{% url 'login' %}">Book a Service</a>
+            <a class="btn btn-outline-secondary btn-lg px-4" href="{% url 'register' %}">Become a Provider</a>
+        {% endif %}
+    </div>
+</section>
+
+<div class="container my-5">
+    <div class="row text-center g-4">
+        <div class="col-md-4">
+            <div class="p-4 bg-white shadow-sm rounded">
+                <i class="fa-solid fa-broom fs-1 text-primary mb-3"></i>
+                <h4>Home Cleaning</h4>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="p-4 bg-white shadow-sm rounded">
+                <i class="fa-solid fa-wrench fs-1 text-primary mb-3"></i>
+                <h4>Repairs & Plumbing</h4>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="p-4 bg-white shadow-sm rounded">
+                <i class="fa-solid fa-wand-magic-sparkles fs-1 text-primary mb-3"></i>
+                <h4>Beauty Services</h4>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

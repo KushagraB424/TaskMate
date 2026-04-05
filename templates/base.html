@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}TaskMates{% endblock %}</title>
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <!-- Custom CSS -->
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+    <link rel="stylesheet" href="/static/css/chatbot.css">
+    <style>
+        body { font-family: 'Inter', sans-serif; background: #f8f9fc; }
+        .navbar-brand { font-weight: 700; color: #4e73df !important; }
+        .hero { background: white; padding: 60px 0; border-bottom: 1px solid #eaecf4; }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+  <div class="container">
+    <a class="navbar-brand" href="/"><i class="fa-solid fa-house-chimney"></i> TaskMates</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navItems">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navItems">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        {% if user.is_authenticated %}
+            <li class="nav-item"><span class="nav-link fw-bold text-dark">Welcome, {{ user.username }} ({{ user.get_role_display }})</span></li>
+            <li class="nav-item">
+                <form method="post" action="{% url 'logout' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-outline-danger ms-2">Logout</button>
+                </form>
+            </li>
+        {% else %}
+            <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
+            <li class="nav-item"><a class="btn btn-primary ms-2" href="{% url 'register' %}">Register</a></li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</nav>
+
+{% block content %}{% endblock %}
+
+<!-- Chatbot Widget -->
+<div id="chatbot-widget">
+    <div id="chatbot-popup" class="card shadow-lg d-none">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h6 class="mb-0"><i class="fa-solid fa-robot"></i> TaskMates AI</h6>
+            <button class="btn btn-sm text-white" id="chatbot-close"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="card-body" id="chatbot-messages">
+            <div class="bot-message bubble">Hi there! I am your TaskMates AI assistant. How can I help you regarding home services today?</div>
+        </div>
+        <div class="card-footer p-2 bg-white">
+            <div class="input-group">
+                <input type="text" id="chatbot-input" class="form-control" placeholder="Ask something...">
+                <button class="btn btn-primary" id="chatbot-send"><i class="fa-solid fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </div>
+    
+    <button class="btn btn-primary rounded-circle shadow-lg" id="chatbot-toggle">
+        <i class="fa-solid fa-comment-dots fs-4"></i>
+    </button>
+</div>
+
+<!-- jQuery and Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Custom JS -->
+<script src="/static/js/chatbot.js"></script>
+</body>
+</html>
