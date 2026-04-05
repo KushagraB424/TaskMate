@@ -1,16 +1,7 @@
 #!/bin/bash
 set -e
 
-# If DATABASE_URL is not set, we're likely in local docker-compose
-if [ -z "$DATABASE_URL" ]; then
-  echo "Waiting for local postgres (db container)..."
-  while ! nc -z db 5432 2>/dev/null; do
-    sleep 0.5
-  done
-  echo "PostgreSQL started"
-else
-  echo "External DATABASE_URL detected, skipping local DB wait..."
-fi
+echo "Booting TaskMates Application..."
 
 # Apply database migrations
 echo "Make migrations"
