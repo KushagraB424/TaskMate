@@ -45,12 +45,53 @@
                                     {% elif booking.status == 'ACCEPTED' %}
                                         <span class="badge bg-primary px-3 py-2 rounded-pill">Accepted</span>
                                     {% elif booking.status == 'COMPLETED' %}
-                                        <span class="badge bg-success px-3 py-2 rounded-pill">Completed</span>
+                                        <span class="badge bg-success px-3 py-2 rounded-pill mb-1">Completed</span><br>
+                                        {% if booking.review %}
+                                            <span class="text-warning small"><i class="fa-solid fa-star"></i> {{ booking.review.rating }}/5</span>
+                                        {% else %}
+                                            <button type="button" class="btn btn-sm btn-outline-primary mt-1" data-bs-toggle="modal" data-bs-target="#reviewModal{{ booking.id }}">Leave Review</button>
+                                        {% endif %}
                                     {% else %}
                                         <span class="badge bg-secondary px-3 py-2 rounded-pill">{{ booking.status }}</span>
                                     {% endif %}
                                 </td>
                             </tr>
+                            
+                            <!-- Review Modal -->
+                            <div class="modal fade" id="reviewModal{{ booking.id }}" tabindex="-1">
+                              <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                  <form action="{% url 'submit_review' booking.id %}" method="POST">
+                                    {% csrf_token %}
+                                    <div class="modal-header bg-light">
+                                      <h5 class="modal-title fw-bold">Review {{ booking.service.name }}</h5>
+                                      <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                      <p class="text-muted mb-4">How was your service experience with {% if booking.servicer %}{{ booking.servicer.username }}{% else %}the professional{% endif %}?</p>
+                                      <div class="mb-3">
+                                        <label class="form-label fw-bold text-dark">Rating (1-5)</label>
+                                        <select name="rating" class="form-select" required>
+                                            <option value="5">5 - Excellent</option>
+                                            <option value="4">4 - Good</option>
+                                            <option value="3">3 - Average</option>
+                                            <option value="2">2 - Poor</option>
+                                            <option value="1">1 - Terrible</option>
+                                        </select>
+                                      </div>
+                                      <div class="mb-3">
+                                        <label class="form-label fw-bold text-dark">Feedback</label>
+                                        <textarea name="feedback" class="form-control" rows="3" placeholder="Tell us what you liked or how we can improve..." required></textarea>
+                                      </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                      <button type="submit" class="btn btn-primary w-100 fw-bold">Submit Review</button>
+                                    </div>
+                                  </form>
+                                </div>
+                              </div>
+                            </div>
+                            
                             {% endfor %}
                         </tbody>
                     </table>

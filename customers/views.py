@@ -26,3 +26,17 @@ def book_service(request, service_id):
             scheduled_date=scheduled_date
         )
     return redirect('customer_dashboard')
+
+@login_required
+def submit_review(request, request_id):
+    if request.method == 'POST':
+        service_request = get_object_or_404(ServiceRequest, id=request_id, customer=request.user, status='COMPLETED')
+        rating = request.POST.get('rating')
+        feedback = request.POST.get('feedback')
+        if rating and feedback:
+            from customers.models import Review
+            Review.objects.update_or_create(
+                service_request=service_request,
+                defaults={'rating': rating, 'feedback': feedback}
+            )
+    return redirect('customer_dashboard')
