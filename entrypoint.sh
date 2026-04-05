@@ -1,12 +1,15 @@
 #!/bin/bash
 set -e
 
-if [ "$RENDER" != "true" ]; then
-  echo "Waiting for local postgres..."
-  while ! nc -z db 5432; do
-    sleep 0.1
+# If DATABASE_URL is not set, we're likely in local docker-compose
+if [ -z "$DATABASE_URL" ]; then
+  echo "Waiting for local postgres (db container)..."
+  while ! nc -z db 5432 2>/dev/null; do
+    sleep 0.5
   done
   echo "PostgreSQL started"
+else
+  echo "External DATABASE_URL detected, skipping local DB wait..."
 fi
 
 # Apply database migrations
