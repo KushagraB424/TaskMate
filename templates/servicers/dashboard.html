@@ -1,7 +1,84 @@
 {% extends "base.html" %}
+
 {% block content %}
-<div class="container my-5">
-    <h2>Provider Dashboard</h2>
-    <p>Welcome to your control panel. Here you will be able to manage your incoming service requests and set your availability.</p>
+<div class="bg-dark text-white py-4 mb-5 shadow-sm">
+    <div class="container d-flex align-items-center">
+        <div class="p-3 bg-secondary text-white rounded-circle me-3 shadow" style="width: 60px; height: 60px; display: flex; align-items: center; justify-content: center;">
+            <i class="fa-solid fa-briefcase fs-3"></i>
+        </div>
+        <div>
+            <h2 class="mb-0 fw-bold">Provider Control Panel</h2>
+            <p class="mb-0 text-white-50">View open jobs and update your ongoing assignments.</p>
+        </div>
+    </div>
+</div>
+
+<div class="container mb-5">
+    <div class="row g-4">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-white border-bottom-0 pt-4">
+                    <h5 class="fw-bold"><i class="fa-solid fa-list-check me-2 text-primary"></i>Your Current Assignments</h5>
+                </div>
+                <div class="card-body">
+                    {% if assigned_jobs %}
+                        <div class="list-group list-group-flush">
+                            {% for job in assigned_jobs %}
+                                <div class="list-group-item py-3 px-0 border-light">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h6 class="fw-bold mb-1">{{ job.service.name }} <span class="badge bg-light text-dark ms-2">#{{ job.id }}</span></h6>
+                                            <p class="text-muted small mb-0"><i class="fa-solid fa-user me-1"></i> {{ job.customer.username }} &bull; <i class="fa-solid fa-calendar me-1"></i> {{ job.request_date|date:"g:i A, M d" }}</p>
+                                        </div>
+                                        <div>
+                                            {% if job.status == 'ACCEPTED' %}
+                                                <form action="{% url 'complete_job' job.id %}" method="POST">
+                                                    {% csrf_token %}
+                                                    <button type="submit" class="btn btn-sm btn-success fw-bold px-3">Mark Complete</button>
+                                                </form>
+                                            {% else %}
+                                                <span class="badge bg-secondary px-3 py-2 rounded-pill">{{ job.status }}</span>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <p class="text-muted my-3 text-center">You have no active assignments right now.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card border-0 shadow-sm bg-light">
+                <div class="card-header bg-transparent border-bottom-0 pt-4">
+                    <h5 class="fw-bold"><i class="fa-solid fa-satellite-dish me-2 text-warning"></i>Open Jobs Scanner</h5>
+                </div>
+                <div class="card-body p-0">
+                    <div class="list-group list-group-flush rounded-bottom">
+                        {% for job in open_jobs %}
+                            <div class="list-group-item bg-transparent py-3 border-light">
+                                <h6 class="fw-bold mb-1">{{ job.service.name }}</h6>
+                                <p class="text-primary fw-bold small mb-2">${{ job.service.base_price }} payout</p>
+                                <div class="d-flex gap-2">
+                                    <form action="{% url 'accept_job' job.id %}" method="POST" class="w-100">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-sm btn-primary w-100 fw-bold">Accept</button>
+                                    </form>
+                                </div>
+                            </div>
+                        {% empty %}
+                            <div class="p-4 text-center text-muted">
+                                <i class="fa-solid fa-mug-hot fs-3 mb-2 text-secondary"></i>
+                                <p class="mb-0 small">No new jobs matching your profile are open currently.</p>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}
