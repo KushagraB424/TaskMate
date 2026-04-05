@@ -31,3 +31,6 @@ EXPOSE 8080
 
 # Set the entrypoint
 ENTRYPOINT ["/app/entrypoint.sh"]
+
+# Default command to start the server (Render will bind to $PORT natively)
+CMD sh -c "gunicorn taskmates.wsgi:application --bind 0.0.0.0:${PORT:-8080}"
