@@ -51,6 +51,40 @@
             </div>
         </div>
 
+        <div class="col-lg-8 mt-4">
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-white border-bottom-0 pt-4">
+                    <h5 class="fw-bold"><i class="fa-solid fa-star me-2 text-warning"></i>Your Reviews</h5>
+                </div>
+                <div class="card-body">
+                    {% if reviews %}
+                        <div class="list-group list-group-flush">
+                            {% for review in reviews %}
+                                <div class="list-group-item py-3 px-0 border-light">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <h6 class="fw-bold mb-0">{{ review.service_request.service.name }} <span class="badge bg-light text-dark ms-2">#{{ review.service_request.id }}</span></h6>
+                                        <div class="text-warning small">
+                                            {% for i in "12345"|make_list %}
+                                                {% if forloop.counter <= review.rating %}
+                                                    <i class="fa-solid fa-star"></i>
+                                                {% else %}
+                                                    <i class="fa-regular fa-star"></i>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                    <p class="text-muted mb-1">"{{ review.feedback }}"</p>
+                                    <small class="text-muted"><i class="fa-solid fa-user me-1"></i> {{ review.service_request.customer.username }} &bull; <i class="fa-solid fa-calendar me-1"></i> {{ review.created_at|date:"M d, Y" }}</small>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <p class="text-muted my-3 text-center">You have no reviews yet.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
         <div class="col-lg-4">
             <div class="card border-0 shadow-sm bg-light">
                 <div class="card-header bg-transparent border-bottom-0 pt-4">
@@ -61,6 +95,7 @@
                         {% for job in open_jobs %}
                             <div class="list-group-item bg-transparent py-3 border-light">
                                 <h6 class="fw-bold mb-1">{{ job.service.name }}</h6>
+                                <p class="text-muted small mb-1"><i class="fa-solid fa-calendar-day me-1"></i> {{ job.scheduled_date|date:"g:i A, M d, Y" }}</p>
                                 <p class="text-primary fw-bold small mb-2">${{ job.service.base_price }} payout</p>
                                 <div class="d-flex gap-2">
                                     <form action="{% url 'accept_job' job.id %}" method="POST" class="w-100">

@@ -14,7 +14,22 @@ def admin_analytics_api(request):
     service_counts = ServiceRequest.objects.values('service__name').annotate(count=Count('id'))
     
     # NEW: Users by Role
+    # NEW: Users by Role
     role_counts = User.objects.values('role').annotate(count=Count('id'))
+    
+    # NEW: Average Rating by Provider
+    from customers.models import Review
+    from django.db.models import Avg
+    
+    providers = User.objects.filter(role='SERVICER')
+    provider_names = []
+    provider_ratings = []
+    
+    for provider in providers:
+        avg = Review.objects.filter(service_request__servicer=provider).aggregate(Avg('rating'))['rating__avg']
+        if avg is not None:
+            provider_names.append(provider.username)
+            provider_ratings.append(round(avg, 2))
     
     data = {
         'status_labels': [item['status'] for item in status_counts],
@@ -25,6 +40,9 @@ def admin_analytics_api(request):
         
         'role_labels': [item['role'] for item in role_counts],
         'role_data': [item['count'] for item in role_counts],
+        
+        'provider_labels': provider_names,
+        'provider_ratings': provider_ratings,
     }
     
     return JsonResponse(data)

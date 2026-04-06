@@ -45,6 +45,12 @@
                                     <canvas id="roleChart"></canvas>
                                 </div>
                             </div>
+                            <div style="flex: 1; min-width: 0; text-align: center;">
+                                <h4 style="color: #5a5c69; margin-bottom: 15px;">Average Rating by Provider</h4>
+                                <div style="position: relative; height: 250px; width: 100%;">
+                                    <canvas id="ratingChart"></canvas>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 `;
@@ -92,6 +98,24 @@
                                 }]
                             },
                             options: { responsive: true, maintainAspectRatio: false }
+                        });
+
+                        // Render Rating Chart
+                        new Chart(document.getElementById('ratingChart'), {
+                            type: 'bar',
+                            data: {
+                                labels: data.provider_labels,
+                                datasets: [{
+                                    label: 'Avg Rating',
+                                    data: data.provider_ratings,
+                                    backgroundColor: '#f6c23e'
+                                }]
+                            },
+                            options: { 
+                                responsive: true, 
+                                maintainAspectRatio: false,
+                                scales: { y: { beginAtZero: true, max: 5 } }
+                            }
                         });
                     });
             }

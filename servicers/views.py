@@ -1,16 +1,18 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
-from customers.models import ServiceRequest
+from customers.models import ServiceRequest, Review
 from django.views.decorators.http import require_POST
 
 @login_required
 def dashboard_view(request):
     assigned_jobs = ServiceRequest.objects.filter(servicer=request.user).order_by('-request_date')
     open_jobs = ServiceRequest.objects.filter(status='PENDING', servicer__isnull=True).order_by('-request_date')
+    reviews = Review.objects.filter(service_request__servicer=request.user).order_by('-created_at')
 
     return render(request, 'servicers/dashboard.html', {
         'assigned_jobs': assigned_jobs,
         'open_jobs': open_jobs,
+        'reviews': reviews,
     })
 
 @login_required
