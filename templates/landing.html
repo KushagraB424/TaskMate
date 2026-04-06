@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block content %}
 <section class="hero text-center py-5">
@@ -27,18 +28,21 @@
             <div class="p-4 bg-white shadow-sm rounded">
                 <i class="fa-solid fa-broom fs-1 text-primary mb-3"></i>
                 <h4>Home Cleaning</h4>
+                <img src="{% static 'images/home_cleaning.png' %}" alt="Home Cleaning" class="img-fluid rounded mt-3">
             </div>
         </div>
         <div class="col-md-4">
             <div class="p-4 bg-white shadow-sm rounded">
                 <i class="fa-solid fa-wrench fs-1 text-primary mb-3"></i>
                 <h4>Repairs & Plumbing</h4>
+                <img src="{% static 'images/repairs_plumbing.png' %}" alt="Repairs & Plumbing" class="img-fluid rounded mt-3">
             </div>
         </div>
         <div class="col-md-4">
             <div class="p-4 bg-white shadow-sm rounded">
                 <i class="fa-solid fa-wand-magic-sparkles fs-1 text-primary mb-3"></i>
                 <h4>Beauty Services</h4>
+                <img src="{% static 'images/beauty_services.png' %}" alt="Beauty Services" class="img-fluid rounded mt-3">
             </div>
         </div>
     </div>
