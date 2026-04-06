@@ -9,12 +9,13 @@
 
 | Name | Roll No | Registration No |
 |------|---------|-----------------|
-| ABC  | 23      | 200905200       |
-| XYZ  | 24      | 200905202       |
+| Ayush Kumar  | 31      | 230962170       |
+| Om Uday Dhondge  | 47      | 230962282       |
+| Kushagra Gupta  | 46      | 230962280       |
 
-**Section:** XX
+**Section:** C
 
-**Under the Guidance of:** XXXXXXXX and YYYYYYY
+Under the Guidance of: Mrs. Suma D
 
 **School of Computer Engineering**
 Manipal Institute of Technology, Manipal, Karnataka - 576104
