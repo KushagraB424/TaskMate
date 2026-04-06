@@ -13,5 +13,15 @@ python manage.py migrate
 echo "Collect static files"
 python manage.py collectstatic --noinput   
 
+# --- THE FIX ---
+# Automatically promote your account to Superuser
+echo "Promoting kushagraadmin..."
+python promote.py
+
+# Automatically create the default admin/admin backup account
+echo "Ensuring default admin exists..."
+python create_admin.py
+# ---------------
+
 # Execute the passed command (e.g., gunicorn)
 exec "$@"
